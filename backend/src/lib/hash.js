@@ -1,4 +1,5 @@
 // import "dotenv/config";
+import "dotenv/config";
 import bcrypt from "bcryptjs";
 
 // Operation: Hashes a given password
@@ -11,6 +12,11 @@ export async function hashPassword(password) {
   return { salt, hash };
 }
 
-export function generateHash(password, salt) {
-  return bcrypt.hashSync(password, salt);
+export async function comparePassword(givenPassword, userPassword) {
+  const response = await bcrypt.compare(givenPassword, userPassword);
+  return response;
+}
+
+export async function generateHash(password, salt) {
+  return await bcrypt.hash(password, salt);
 }

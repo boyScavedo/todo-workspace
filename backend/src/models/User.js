@@ -23,13 +23,20 @@ import mongoose from "mongoose";
  *           example: "john@example.com"
  *         passwordSalt:
  *           type: string
+ *           deprecated: true
  *           description: The auto-generated password hashing salt (bcrypt)
  *         passwordHash:
  *           type: string
  *           description: The auto-generated password hash using given password and salt (bcrypt)
  *         membership:
  *           type: number
- *           description: Level of membership
+ *           deprecated: true
+ *           description: Number of membership
+ *         workspaces:
+ *           type: array
+ *           description: All the workspaces joined by the user
+ *           items:
+ *             type: string
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -41,9 +48,17 @@ const userSchema = mongoose.Schema(
   {
     name: { type: String, default: "" },
     email: { type: String, required: true, unique: true },
+
+    /** @deprecated passwordSalt is already stored inside passwordHash in bcrypt */
     passwordSalt: { type: String, required: true },
+
     passwordHash: { type: String, required: true },
+
+    // DEPRECATED: membership will be deprecated and will be removed in v1.0.0, use workspaces
+    /** @deprecated Use user.workspaces.length instead*/
     membership: { type: Number, default: 0 },
+
+    workspaces: [{ type: mongoose.Types.ObjectId, ref: "Workspace" }],
   },
   { timestamps: true }
 );

@@ -1,11 +1,14 @@
 import express from "express";
+
 import {
   createUser,
   deleteUserById,
   getAllUsers,
   getUserById,
   updateUser,
+  userVerification,
 } from "../controllers/userController.js";
+import authVerification from "../middleware/authVerification.js";
 
 const router = express.Router();
 
@@ -68,6 +71,86 @@ const router = express.Router();
  *                   example: 'Some error message'
  */
 router.get("/", getAllUsers);
+
+/**
+ * @openapi
+ * /api/v1/users/me:
+ *   get:
+ *     summary: Get current logged-in user details
+ *     description: Validates the session cookie and returns the user profile information
+ *     tags: [Users]
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: User data retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User data retrieved successfully
+ *                 data:
+ *                   type: object
+ *                   nullable: true
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 'J1231b1233452b...'
+ *                     name:
+ *                       type: string
+ *                       example: 'John Doe'
+ *                     email:
+ *                       type: string
+ *                       example: 'john@example.com'
+ *                     workspaces:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                 error:
+ *                   type: string
+ *                   nullable: true
+ *                   example: null
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ *                 data:
+ *                   type: string
+ *                   nullable: true
+ *                   example: null
+ *                 error:
+ *                   type: string
+ *                   nullable: true
+ *                   example: error.message
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ *                 data:
+ *                   type: string
+ *                   nullable: true
+ *                   example: null
+ *                 error:
+ *                   type: string
+ *                   nullable: true
+ *                   example: error.message
+ */
+router.get("/me", authVerification, userVerification);
 
 /**
  * @openapi
