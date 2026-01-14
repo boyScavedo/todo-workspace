@@ -1,14 +1,16 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Navbar from './Navbar'
+import SideBar from './SideBar'
 
 const Layout = () => {
   return (
     <>
-        <Navbar />
-        <main>
+      <div className='flex'>
+        <SideBar />
+        <main className='w-full'>
             <Outlet />
         </main>
+      </div>
     </>
   )
 }

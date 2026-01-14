@@ -5,9 +5,9 @@ const Form = () => {
 
     return (
     <>
-        <form className='h-fit w-fit rounded-2xl shadow-lg p-14 space-y-6 bg-white bg-white/30 backdrop-blur-xs'>
+        <form className='h-fit w-fit rounded-2xl shadow-lg p-14 space-y-6 bg-black/30 backdrop-blur-xs'>
             <div className='flex justify-between items-center'>
-                <h2 className='font-bold text-4xl'>Sign Into <br /> Your Account</h2>
+                <h2 className='font-bold text-4xl text-white'>Sign Into <br /> Your Account</h2>
                 <span className='p-4 bg-white rounded-full'><ClipboardList size={60} /></span>
             </div>
             <div className='flex items-end gap-2 w-96'>

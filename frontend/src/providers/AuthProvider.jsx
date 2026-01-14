@@ -8,7 +8,7 @@ const AuthProvider = ({children}) => {
     const signin =(userData)=> setUser(userData);
     const signout =()=> setUser(null);
 
-    const isAuthenticated = false;
+    const isAuthenticated = true;
     
 
   return (
