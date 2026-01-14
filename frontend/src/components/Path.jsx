@@ -4,7 +4,8 @@ import { createBrowserRouter } from 'react-router-dom'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Layout from './Layout'
-import Home from '../pages/Home'
+import Dashboard from '../pages/Dashborad'
+import ProtectedRoute from './ProtectedRoute'
 // import App from '../App'
 
 export const Path =  createBrowserRouter([
@@ -12,10 +13,16 @@ export const Path =  createBrowserRouter([
     {path: '/login', element: <Login />},
     
     {
-        path: '/',
-        element: <Layout />,
+        element: <ProtectedRoute />,
         children: [
-            {index: true, element:<Home />},
+            
+            {
+                path: '/',
+                element: <Layout />,
+                children: [
+                    {index: true, element:<Dashboard />},
+                ]
+            }
         ]
-    }
+        }
 ])

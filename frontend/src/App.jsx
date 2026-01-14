@@ -1,10 +1,15 @@
 import React from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { Path } from './components/Path'
+import AuthProvider from './providers/AuthProvider'
 
 const App = () => {
   return (
-    <RouterProvider router={Path} />
+    <>
+      <AuthProvider>
+        <RouterProvider router={Path} />
+      </AuthProvider>
+    </>
   )
 }
 

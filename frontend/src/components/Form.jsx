@@ -2,6 +2,7 @@ import React from 'react'
 import { UserRound, Lock, ClipboardList } from 'lucide-react'
 
 const Form = () => {
+
     return (
     <>
         <form className='h-fit w-fit rounded-2xl shadow-lg p-14 space-y-6 bg-white bg-white/30 backdrop-blur-xs'>
