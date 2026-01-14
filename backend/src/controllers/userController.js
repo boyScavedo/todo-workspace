@@ -1,4 +1,4 @@
-import User from "../models/user.js";
+import User from "../models/User.js";
 import { hashPassword } from "../lib/hash.js";
 
 // Operation: Gets all the users
@@ -225,6 +225,51 @@ export async function deleteUserById(req, res) {
       data: null,
       error: null,
     });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      data: null,
+      error: error.message,
+    });
+  }
+}
+
+// Operation: Verifies user through cookie token
+// Additional Utilities: None
+// Inputs: None
+// Outputs:
+//   Success:
+//     status: 200
+//     message: "User data retrieved successfully"
+//     data: data of user
+//     error: null
+//   User not found:
+//     status: 404
+//     message: "User not found"
+//     data: null
+//     error: null
+//   Failure:
+//     status: 500
+//     message: "Internal server error"
+//     error: error message string
+export async function userVerification(req, res) {
+  try {
+    const user = await User.findById(req.user.id).select(
+      "-passwordHash -passwordSalt"
+    );
+
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "User not found", data: null, error: null });
+
+    res
+      .status(200)
+      .json({
+        message: "User data retrieved successfully",
+        data: user,
+        error: null,
+      });
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
