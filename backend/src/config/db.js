@@ -1,10 +1,20 @@
 import mongoose from "mongoose";
 
-export default async function connectDB() {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("MONGODB CONNECTED SUCCESSFULLY");
-  } catch (error) {
-    console.log(error);
-  }
+export const userConnection = mongoose.createConnection(
+  process.env.MONGO_USERS_URI
+);
+export const workspaceConnection = mongoose.createConnection(
+  process.env.MONGO_WORKSPACES_URI
+);
+
+export function connectDB() {
+  userConnection.on("connected", () => console.log("USER DATABASE CONNECTED"));
+  workspaceConnection.on("connected", () =>
+    console.log("WORKSPACE DATABASE CONNECTED")
+  );
+
+  userConnection.on("error", (err) => console.log("USER DATABASE ERROR", err));
+  workspaceConnection.on("error", (err) =>
+    console.log("WORKSPACE DATABASE ERROR", err)
+  );
 }

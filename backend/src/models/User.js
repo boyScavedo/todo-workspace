@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { userConnection } from "../config/db.js";
 
 /**
  * @openapi
@@ -63,6 +64,6 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = userConnection.model("User", userSchema);
 
 export default User;

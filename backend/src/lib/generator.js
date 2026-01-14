@@ -2,7 +2,7 @@ import crypto from "crypto";
 import JWT from "jsonwebtoken";
 
 export function workspaceInviteCodeGenerator() {
-  return crypto.randomBytes(process.env.BYTE_SIZE).toString("hex");
+  return crypto.randomBytes(Number(process.env.BYTE_SIZE)).toString("hex");
 }
 
 export function generateToken(id) {

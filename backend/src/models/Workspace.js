@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { workspaceInviteCodeGenerator } from "../lib/generator.js";
+import { workspaceConnection } from "../config/db.js";
 
 /**
  * @openapi
@@ -25,8 +26,19 @@ import { workspaceInviteCodeGenerator } from "../lib/generator.js";
  *           type: mongoose.Types.ObjectId
  *           description: The one who owns the workspace
  *         members:
- *           type: array of mongoose.Types.ObjectId
- *           description: All the members who have joined the workspace
+ *           type: object
+ *           description: All the members who have joined the workspace and their workspace specific details
+ *           properties:
+ *             userId:
+ *               type: string
+ *               required: true
+ *             roles:
+ *               type: string
+ *               enum: ['member', 'admin']
+ *               default: 'admin'
+ *             joinedAt:
+ *               type: Date
+ *               default: Date.now
  *         inviteCode:
  *           type: String
  *           unique: true
@@ -58,16 +70,31 @@ const workspaceSchema = mongoose.Schema(
     },
     members: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        email: {
+          type: String,
+        },
+        role: {
+          type: String,
+          enum: ["member", "admin"],
+          default: "member",
+        },
+        joinedAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
-    //  channels: [  To be added later
-    //    {
-    //      type: mongoose.Types.ObjectId,
-    //        ref: "ToDoChannel"
-    //    },
-    //  ],
+    channels: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ToDoChannel",
+      },
+    ],
     inviteCode: {
       type: String,
       unique: true,
@@ -77,6 +104,6 @@ const workspaceSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Workspace = mongoose.model("Workspace", workspaceSchema);
+const Workspace = workspaceConnection.model("Workspace", workspaceSchema);
 
 export default Workspace;

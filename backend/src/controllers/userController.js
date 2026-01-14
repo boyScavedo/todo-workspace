@@ -160,7 +160,6 @@ export async function createUser(req, res) {
 export async function updateUser(req, res) {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
     const user = await User.findById(req.params.id);
 
     if (!user)
@@ -263,13 +262,11 @@ export async function userVerification(req, res) {
         .status(404)
         .json({ message: "User not found", data: null, error: null });
 
-    res
-      .status(200)
-      .json({
-        message: "User data retrieved successfully",
-        data: user,
-        error: null,
-      });
+    res.status(200).json({
+      message: "User data retrieved successfully",
+      data: user,
+      error: null,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
